@@ -1,0 +1,161 @@
+* {
+    margin: 0;
+    padding: 0;
+    padding: 0;
+    font-family: Helvetica;
+    box-sizing: border-box;
+}
+
+body {
+    color: #000000;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto; 
+    min-height: 100vh; 
+}
+
+.container {
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    background: #d3d3d3;
+    border-radius: 10px;
+    text-align: center;
+    margin: 50px auto; 
+
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+button-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 6px;
+    border: none;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 6px;
+    border: none;
+}
+
+
+button {
+    border: none;
+    background-color: #1586ff;
+    text-align: center;
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #1167c4;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 2rem;
+    max-width: 100%;
+    padding-bottom: 2rem;
+}
+
+.entity {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.entity h2 {
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.entity svg {
+    width: 15px;
+    transition: transform 0.3s ease;
+}
+
+.attributes {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.options.active .attributes {
+    max-height: 500px;
+}
+
+#result-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.family-table {
+    border-collapse: collapse;
+}
+.family-table th, .family-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    min-width: 75px;
+}
+.family-table th {
+    background-color: #1586ff;
+    color: white;
+}
+.family-table tr:hover {
+    background-color: #ddd;
+}
+
+#result-button{
+    width:20%;
+}
+
+form#deleteSIN {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+input[readonly] {
+    background-color: #DBDBDB; 
+    color: #888; 
+    cursor: not-allowed; 
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Personal Information</h1>
+        <form id="updateForm">
+
+            <div id="info-sections"></div>
+            <button type="button" id="editButton">Edit</button>
+            <button type="submit" id="submitButton" style="display: none;">Submit</button>
+        </form>
+        <div id="info-sections">
+        </div>
+        <button onclick="window.history.back()">Back</button>
+    </div>
+    <script>
+        const sin = new URLSearchParams(window.location.search).get('sin');
+        if (!sin) {
+            alert('No SIN provided.');
+            window.history.back();
+        } else {
+            fetch(`/get_personal_info?sin=${sin}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    const container = document.getElementById('info-sections');
+                    const sections = [
+                        { title: 'Personal Information', fields: ['sin', 'fname', 'lname', 'gender', 'city', 'address'] },
+                        { title: 'Education', fields: ['institution', 'program', 'Graduation_year'] },
+                        { title: 'Occupation', fields: ['company_name', 'job_title', 'location', 'salary'] },
+                        { title: 'Residence', fields: ['country', 'residence_address', 'residence_city'] },
+                        { title: 'Marriage Record', fields: ['spouse_sin'] },
+                        { title: 'Birth Record', fields: ['place_of_birth', 'date_of_birth'] }
+                    ];
+
+                    sections.forEach(section => {
+                        const sectionDiv = document.createElement('div');
+                        sectionDiv.className = 'section';
+                        sectionDiv.innerHTML = `<h3>${section.title}</h3>`;
+                        section.fields.forEach(field => {
+                            let value = data[field] || 'N/A';
+                            if (field === 'date_of_birth' && value !== 'N/A') {
+                                value = value.split('T')[0];
+                            }
+                            sectionDiv.innerHTML += `
+                                <label for="${field}">${field.replace('_', ' ')}:</label>
+                                <input type="text" id="${field}" name="${field}" value="${value}" ${field === 'sin' ? 'readonly' : 'disabled'}>
+                            `;
+                        });
+                        container.appendChild(sectionDiv);
+                    });
+                })
+                .catch(error => console.error('Error fetching personal information:', error));
+
+            document.getElementById('editButton').addEventListener('click', () => {
+                document.querySelectorAll('#updateForm input').forEach(input => {
+                    if (input.id !== 'sin') {
+                        input.disabled = false;
+                    }
+                });
+
+                document.getElementById('editButton').style.display = 'none';
+                document.getElementById('submitButton').style.display = 'inline-block';
+            });
+
+
+            document.getElementById('updateForm').addEventListener('submit', event => {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                const data = Object.fromEntries(formData.entries());
+                fetch(`/update_personal_info`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.error) {
+                            alert(`Error: ${result.error}`);
+                        } else {
+                            alert('Information updated successfully!');
+                            window.location.reload();
+                        }
+                    })
+                    .catch(error => console.error('Error updating personal information:', error));
+            });
+        }
+    </script>
+</body>
+</html>

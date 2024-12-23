@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Search Family</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Family</h1>
+        <form id="searchForm">
+            <label for="sin">Enter SIN:</label>
+            <input type="text" id="sin" name="sin" required>
+            <button type="button" onclick="window.history.back()" style="margin-bottom: 20px;">Back</button>
+            <button type="button" id="searchButton">Search</button>
+            <button type="button" id="showAll">SHOW ALL</button>
+        </form>
+        <table class="family-table">
+            <thead>
+                <tr>
+                    <th>SIN</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>More</th>
+                </tr>
+            </thead>
+
+            <form id="deleteSIN">
+                <input type="text" id="SIN" placeholder="Enter SIN">
+                <button id="delete" type="button">Delete</button>
+            </form>
+            <tbody id="searchResults"></tbody>
+        </table>
+    </div>
+<script>
+    document.getElementById('searchButton').addEventListener('click', () => {
+        //finding the data using sin number
+        const sin = document.getElementById('sin').value;
+        fetch(`/search_family?sin=${sin}`)
+            .then(response => response.json())
+            .then(data => {
+                const resultsTable = document.getElementById('searchResults');
+                resultsTable.innerHTML = ''; 
+                //if there are no data with given sin number we will show a message
+                if (data.length === 0) {
+                    resultsTable.innerHTML = '<tr><td colspan="6">No results found.</td></tr>';
+                    return;
+                }
+                // adding the search results to the table
+                const person = data[0];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${person.sin}</td>
+                    <td>${person.fname} ${person.lname}</td>
+                    <td>${person.gender}</td>
+                    <td>${person.city}</td>
+                    <td>${person.address}</td>
+                    <td><button onclick="location.href='personal_info.html?sin=${person.sin}'">Show More</button></td>
+                `;
+                resultsTable.appendChild(row);
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+    });
+</script>
+
+
+
+</body>
+</html>

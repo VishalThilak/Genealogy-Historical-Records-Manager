@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Tree</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body id="result-body">
+
+        <table class="family-table">
+
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Institution</th>
+                    <th>Program</th>
+                    <th>Graduation Year</th>
+                    <th>Company Name</th>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Country</th>
+                    <th>City</th>
+                </tr>
+               <!-- we will add rows of data dynamically -->
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+       
+    <button id="find_num_people_country" type="button">Find Number of People in a Country</button>
+    <button id="find_salary_people" type="button">Find People having Salary > 100</button>
+    <button id="fin_male_by_country" type="button">Find Number of Male in Each Country</button>
+    <button id="result-button" type="button" onclick="location.href='index.html'">Back</button>
+  
+
+    <script>
+        //wait for the page to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(sessionStorage.getItem('allPersonalInfo')); //getting the data from the session storage(local storage) data will be in json format by server when it queries the database before coming to this page
+            const tbody = document.querySelector('tbody'); //getting the tbody of the table
+            
+            if (data && tbody) {
+                //adding the data to the table
+                data.forEach(person => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${person.fname}</td>
+                        <td>${person.lname}</td>
+                        <td>${person.gender}</td>
+                        <td>${person.institution}</td>
+                        <td>${person.program}</td>
+                        <td>${person.Graduation_year}</td>
+                        <td>${person.company_name}</td>
+                        <td>${person.job_title}</td>
+                        <td>${person.location}</td>
+                        <td>${person.country}</td>
+                        <td>${person.city}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            // query group by -> show number of people in each country that are in our database
+            document.getElementById('find_num_people_country').addEventListener('click', (event) => {
+                event.preventDefault();
+                fetch(`${window.location.origin}/get_num_people_country`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Response failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //query success
+                    show_country_num(data);
+                })
+                .catch(error => {
+                    //query failed
+                    console.error('Error fetching data:', error);
+                    alert('Error fetching data. Please try again.');
+                });
+            });
+
+            //query -> show people having salary > 100
+            document.getElementById('find_salary_people').addEventListener('click', (event) => {
+                event.preventDefault();
+                fetch(`${window.location.origin}/get_salary_people`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Response failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //query success
+                    show_salary_people(data);
+                })
+                .catch(error => {
+                    //query failed
+                    console.error('Error fetching data:', error);
+                    alert('Error fetching data. Please try again.');
+                });
+            });
+
+
+            document.getElementById('fin_male_by_country').addEventListener('click', (event) => {
+                event.preventDefault();
+                fetch(`${window.location.origin}/get_male_by_country`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        show_country_num(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                        alert('Error fetching data. Please try again.');
+                    });
+            });
+
+        });
+
+        function show_country_num(data){
+            console.log(data);
+
+            // delete all the elements in the body
+            const body = document.getElementById('result-body');
+            while (body.firstChild) {
+                body.removeChild(body.firstChild);
+            }
+
+            // Create and append a new table for country data
+            const table = document.createElement('table');
+            table.className = 'family-table';
+
+            // Create attributes
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+                <tr>
+                    <th>Country</th>
+                    <th>Number of People</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            //add data
+            const tbody = document.createElement('tbody');
+            for (entry of data) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.country}</td>
+                    <td>${entry.number_of_residents}</td>
+                `;
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+
+            // Add back button
+            const backButton = document.createElement('button');
+            backButton.id = 'result-button';
+            backButton.type = 'button';
+            backButton.onclick = () => location.href='index.html';
+            backButton.textContent = 'Back';
+
+            // Append elements to body
+            body.appendChild(table);
+            body.appendChild(backButton);
+        }
+
+        function show_salary_people(data) {
+            const body = document.getElementById('result-body');
+            while (body.firstChild) {
+                body.removeChild(body.firstChild);
+            }
+            
+            // Create and append a new table for country data
+            const table = document.createElement('table');
+            table.className = 'family-table';
+
+            // Create attributes
+            const thead = document.createElement('thead');
+            thead.innerHTML = 
+                `<tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Institution</th>
+                    <th>Program</th>
+                    <th>Graduation Year</th>
+                    <th>Company Name</th>
+                    <th>Job Title</th>
+                    <th>Location</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Salary</th>
+                </tr>
+            `;
+
+            table.appendChild(thead);
+            
+            const tbody = document.createElement('tbody');
+            for (const entry of data) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.fname}</td>
+                    <td>${entry.lname}</td>
+                    <td>${entry.gender}</td>
+                    <td>${entry.institution}</td>
+                    <td>${entry.program}</td>
+                    <td>${entry.Graduation_year}</td>
+                    <td>${entry.company_name}</td>
+                    <td>${entry.job_title}</td>
+                    <td>${entry.location}</td>
+                    <td>${entry.country}</td>
+                    <td>${entry.city}</td>
+                    <td>${entry.salary}</td>
+                `;
+                tbody.appendChild(row);
+            }
+            table.appendChild(tbody);
+
+            //back button to go back to home page
+            const backButton = document.createElement('button');
+            backButton.id = 'result-button';
+            backButton.type = 'button';
+            backButton.onclick = () => location.href='index.html';
+            backButton.textContent = 'Back to Home';
+
+            // Append elements to body
+            body.appendChild(table);
+            body.appendChild(backButton);
+        }
+
+    </script>
+</body>
+</html>

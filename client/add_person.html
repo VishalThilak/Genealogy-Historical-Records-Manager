@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information</title>
+    
+    <!--Some css was referenced using this video: https://www.youtube.com/watch?v=4qnWreynXLU&t=269s-->
+    <style>
+        .personal_info {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content:center;
+            align-items: center;
+        }
+        .section-container {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+        }
+        .section {
+            background: white;
+            width: 50%;
+            padding: 15px;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+            display: flex;
+            flex-direction: column;
+        }
+        .label {
+            font-weight: bold;
+        }
+
+        input {
+            margin-bottom: 10px;
+            width: 70%;
+            height: 20px;
+        }
+
+        select {
+            margin-bottom: 10px;
+            width: 70%;
+            height: 20px;
+        }
+       
+        button {
+            border: none;
+            background-color: #1586ff;
+            text-align: center;
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #1167c4;
+        }
+    </style>
+</head>
+<script src="app.js"></script>
+<body>
+    
+    <form id="addPersonForm" >
+
+        <div class="personal_info">
+                <h1 style="text-align: center;">Add Individual Information</h1>
+                <p style="color: red; ">* required</p>
+            
+            <div class="section-container">
+                <div class="section">
+                    <h2 class="entity_title">Personal Information</h2>
+                    <label for="fname" class="label">First Name:<span style="color: red;">*</span></label>
+                    <input type="text" id="fname" name="fname" required>
+
+                    <label for="lname" class="label">Last Name:<span style="color: red;">*</span></label>
+                    <input type="text" id="lname" name="lname" required>
+
+                    <label for="gender" class="label">Gender:<span style="color: red;">*</span></label>
+                    <input type="text" id="gender" name="gender" required>
+
+                    <label for="sin" class="label">SIN Number:<span style="color: red;">*</span></label>
+                    <input type="number" id="sin" name="sin" required>
+                </div>
+
+                <div class="section">
+                    <h2 class="entity_title">Occupation</h2>
+                    <label for="company_name" class="label">Company Name<span style="color: red;">*</span></label>
+                    <input type="text" id="company_name" name="company_name" required>
+
+                    <label for="job_title" class="label">Job Title:<span style="color: red;">*</span></label>
+                    <input type="text" id="job_title" name="job_title" required>
+
+                    <label for="location" class="label">Location:<span style="color: red;">*</span></label>
+                    <input type="text" id="location" name="location" required>
+
+                    <label for="salary" class="label">Salary:<span style="color: red;">*</span></label>
+                    <input type="number" id="salary" name="salary" required>
+
+                
+                </div>  
+            </div>
+
+            <div class="section-container">
+                <div class="section">
+                    <h2 class="entity_title">Education</h2>
+                    <label for="institution" class="label">Institution Name:<span style="color: red;">*</span></label>
+                    <input type="text" id="institution" name="institution" required>
+
+                    <label for="program" class="label">Program/Degree:<span style="color: red;">*</span></label>
+                    <input type="text" id="program" name="program" required>
+
+                    <label for="Graduation_year" class="label">Graduation Year:<span style="color: red;">*</span></label>
+                    <input type="text" id="Graduation_year" name="Graduation_year" required>
+
+                </div>
+
+                <div class="section">
+                    <h2 class="entity_title">Residence Information</h2>
+                    <label for="country" class="label">Country:<span style="color: red;">*</span></label>
+                    <input type="text" id="country" name="country" required>
+                    
+                    <label for="address" class="label">Address:<span style="color: red;">*</span></label>
+                    <input type="text" id="address" name="address" required>
+                    
+                    <label for="city" class="label">City:<span style="color: red;">*</span></label>
+                    <input type="text" id="city" name="city" required>
+                
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="section">
+                    <h2 class="entity_title">Marriage Record</h2>
+
+                    <label for="marriage_id" class="label">Husband/Wife SIN:<span style="color: red;">*</span></label>
+                    <input type="text" id="marriage_id" name="marriage_id" required>
+
+                    <h2 class="entity_title">Family Record</h2>
+
+                    <label for="family_id" class="label">One of the Family Member SIN:<span style="color: red;">*</span></label>
+                    <input type="text" id="family_id" name="family_id" required>
+                    
+                </div>
+
+                <div class="section">
+                    <h2 class="entity_title">Birth Record</h2>
+
+                    <label for="date_of_birth" class="label">Date of Birth:<span style="color: red;">*</span></label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" required>
+
+                    <label for="place_of_birth" class="label">Place of Birth:</label>
+                    <input type="text" id="place_of_birth" name="place_of_birth" >
+
+                </div>
+            </div>
+            
+            <div class="button-wrapper">
+                <button type="button" onclick="window.history.back()">Back</button>
+                <button type="submit" id="submitButton">Submit</button>
+            </div>
+        </div>
+    </form>
+        
+        
+</body>
+</html>
